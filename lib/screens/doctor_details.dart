@@ -9,8 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../components//custom_appbar.dart';
 
 class DoctorDetails extends StatefulWidget {
-  const DoctorDetails({Key? key, required this.doctor, required this.isFav})
-      : super(key: key);
+  const DoctorDetails({Key? key, required this.doctor, required this.isFav}) : super(key: key);
   final Map<String, dynamic> doctor;
   final bool isFav;
 
@@ -41,8 +40,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
             //press this button to add/remove favorite doctor
             onPressed: () async {
               //get latest favorite list from auth model
-              final list =
-                  Provider.of<AuthModel>(context, listen: false).getFav;
+              final list = Provider.of<AuthModel>(context, listen: false).getFav;
 
               //if doc id is already exist, mean remove the doc id
               if (list.contains(doctor['doc_id'])) {
@@ -55,8 +53,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
               //update the list into auth model and notify all widgets
               Provider.of<AuthModel>(context, listen: false).setFavList(list);
 
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
+              final SharedPreferences prefs = await SharedPreferences.getInstance();
               final token = prefs.getString('token') ?? '';
 
               if (token.isNotEmpty && token != '') {
@@ -94,8 +91,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 width: double.infinity,
                 title: 'Book Appointment',
                 onPressed: () {
-                  Navigator.of(context).pushNamed('booking_page',
-                      arguments: {"doctor_id": doctor['doc_id']});
+                  Navigator.of(context).pushNamed('booking_page', arguments: {"doctor_id": doctor['doc_id']});
                 },
                 disable: false,
               ),
@@ -122,7 +118,7 @@ class AboutDoctor extends StatelessWidget {
           CircleAvatar(
             radius: 65.0,
             backgroundImage: NetworkImage(
-              "http://127.0.0.1:8000${doctor['doctor_profile']}",
+              "https://pbs.twimg.com/media/FjU2lkcWYAgNG6d.jpg",
             ),
             backgroundColor: Colors.white,
           ),
@@ -207,8 +203,7 @@ class DetailBody extends StatelessWidget {
 }
 
 class DoctorInfo extends StatelessWidget {
-  const DoctorInfo({Key? key, required this.patients, required this.exp})
-      : super(key: key);
+  const DoctorInfo({Key? key, required this.patients, required this.exp}) : super(key: key);
 
   final int patients;
   final int exp;
@@ -241,8 +236,7 @@ class DoctorInfo extends StatelessWidget {
 }
 
 class InfoCard extends StatelessWidget {
-  const InfoCard({Key? key, required this.label, required this.value})
-      : super(key: key);
+  const InfoCard({Key? key, required this.label, required this.value}) : super(key: key);
 
   final String label;
   final String value;

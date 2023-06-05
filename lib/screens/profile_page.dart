@@ -1,4 +1,5 @@
 import "package:doctor_appointment_app/main.dart";
+import "package:doctor_appointment_app/screens/take_picture.dart";
 import "package:doctor_appointment_app/utils/config.dart";
 import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
@@ -65,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 margin: const EdgeInsets.fromLTRB(0, 45, 0, 0),
                 child: Container(
                   width: 300,
-                  height: 250,
+                  height: 350,
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -80,6 +81,32 @@ class _ProfilePageState extends State<ProfilePage> {
                         Divider(
                           color: Colors.grey[300],
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.camera,
+                              color: Colors.blueAccent[400],
+                              size: 35,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => TakeFotoPenilaianPage()));
+                              },
+                              child: const Text(
+                                "Change Foto Profile",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 24, 79, 199),
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Config.spaceSmall,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -141,14 +168,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             TextButton(
                               onPressed: () async {
-                                final SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
+                                final SharedPreferences prefs = await SharedPreferences.getInstance();
                                 final token = prefs.getString('token') ?? '';
 
                                 if (token.isNotEmpty && token != '') {
                                   //logout here
-                                  final response =
-                                      await DioProvider().logout(token);
+                                  final response = await DioProvider().logout(token);
 
                                   if (response == 200) {
                                     //if successfully delete access token
@@ -156,8 +181,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     await prefs.remove('token');
                                     setState(() {
                                       //redirect to login page
-                                      MyApp.navigatorKey.currentState!
-                                          .pushReplacementNamed('/');
+                                      MyApp.navigatorKey.currentState!.pushReplacementNamed('/');
                                     });
                                   }
                                 }

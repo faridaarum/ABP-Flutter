@@ -6,8 +6,7 @@ import 'package:rating_dialog/rating_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppointmentCard extends StatefulWidget {
-  AppointmentCard({Key? key, required this.doctor, required this.color})
-      : super(key: key);
+  AppointmentCard({Key? key, required this.doctor, required this.color}) : super(key: key);
 
   final Map<String, dynamic> doctor;
   final Color color;
@@ -36,7 +35,8 @@ class _AppointmentCardState extends State<AppointmentCard> {
                 children: [
                   CircleAvatar(
                     backgroundImage: NetworkImage(
-                        "http://127.0.0.1:8000${widget.doctor['doctor_profile']}"), //insert doctor profile
+                      "https://pbs.twimg.com/media/FjU2lkcWYAgNG6d.jpg",
+                    ), //insert doctor profile
                   ),
                   const SizedBox(
                     width: 10,
@@ -117,25 +117,19 @@ class _AppointmentCardState extends State<AppointmentCard> {
                                   submitButtonText: 'Submit',
                                   commentHint: 'Your Reviews',
                                   onSubmitted: (response) async {
-                                    final SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-                                    final token =
-                                        prefs.getString('token') ?? '';
+                                    final SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    final token = prefs.getString('token') ?? '';
 
-                                    final rating = await DioProvider()
-                                        .storeReviews(
-                                            response.comment,
-                                            response.rating,
-                                            widget.doctor['appointments']
-                                                ['id'], //this is appointment id
-                                            widget.doctor[
-                                                'doc_id'], //this is doctor id
-                                            token);
+                                    final rating = await DioProvider().storeReviews(
+                                        response.comment,
+                                        response.rating,
+                                        widget.doctor['appointments']['id'], //this is appointment id
+                                        widget.doctor['doc_id'], //this is doctor id
+                                        token);
 
                                     //if successful, then refresh
                                     if (rating == 200 && rating != '') {
-                                      MyApp.navigatorKey.currentState!
-                                          .pushNamed('main');
+                                      MyApp.navigatorKey.currentState!.pushNamed('main');
                                     }
                                   });
                             });

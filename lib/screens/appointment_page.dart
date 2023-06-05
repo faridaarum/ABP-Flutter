@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import 'maps_klinik_page.dart';
+
 class AppointmentPage extends StatefulWidget {
   const AppointmentPage({Key? key}) : super(key: key);
 
@@ -25,9 +27,11 @@ class _AppointmentPageState extends State<AppointmentPage> {
     final token = prefs.getString('token') ?? '';
     final appointment = await DioProvider().getAppointments(token);
     if (appointment != 'Error') {
-      setState(() {
-        schedules = json.decode(appointment);
-      });
+      if (mounted) {
+        setState(() {
+          schedules = json.decode(appointment);
+        });
+      }
     }
   }
 
@@ -90,12 +94,10 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                 if (filterStatus == FilterStatus.upcoming) {
                                   status = FilterStatus.upcoming;
                                   _alignment = Alignment.centerLeft;
-                                } else if (filterStatus ==
-                                    FilterStatus.complete) {
+                                } else if (filterStatus == FilterStatus.complete) {
                                   status = FilterStatus.complete;
                                   _alignment = Alignment.center;
-                                } else if (filterStatus ==
-                                    FilterStatus.cancel) {
+                                } else if (filterStatus == FilterStatus.cancel) {
                                   status = FilterStatus.cancel;
                                   _alignment = Alignment.centerRight;
                                 }
@@ -146,9 +148,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                       ),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    margin: !isLastElement
-                        ? const EdgeInsets.only(bottom: 20)
-                        : EdgeInsets.zero,
+                    margin: !isLastElement ? const EdgeInsets.only(bottom: 20) : EdgeInsets.zero,
                     child: Padding(
                       padding: const EdgeInsets.all(15),
                       child: Column(
@@ -157,31 +157,47 @@ class _AppointmentPageState extends State<AppointmentPage> {
                           Row(
                             children: [
                               CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    "http://127.0.0.1:8000${schedule['doctor_profile']}"),
+                                backgroundImage: NetworkImage("https://pbs.twimg.com/media/FjU2lkcWYAgNG6d.jpg"),
                               ),
                               const SizedBox(
                                 width: 10,
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    schedule['doctor_name'],
-                                    style: const TextStyle(
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        schedule['doctor_name'],
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        schedule['category'],
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => MapsKlinikPage()));
+                                    },
+                                    icon: Icon(
+                                      Icons.map_outlined,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    schedule['category'],
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ],
@@ -207,8 +223,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                   onPressed: () {},
                                   child: const Text(
                                     'Cancel',
-                                    style:
-                                        TextStyle(color: Color.fromARGB(255, 24, 79, 199)),
+                                    style: TextStyle(color: Color.fromARGB(255, 24, 79, 199)),
                                   ),
                                 ),
                               ),
@@ -244,9 +259,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
 }
 
 class ScheduleCard extends StatelessWidget {
-  const ScheduleCard(
-      {Key? key, required this.date, required this.day, required this.time})
-      : super(key: key);
+  const ScheduleCard({Key? key, required this.date, required this.day, required this.time}) : super(key: key);
   final String date;
   final String day;
   final String time;
