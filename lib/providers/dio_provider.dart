@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DioProvider {
+class  DioProvider {
   //get token
-  var url = 'https://35ab-182-253-194-66.ngrok-free.app';
+  var url = 'https://0b37-180-244-132-34.ngrok-free.app';
   Future<dynamic> getToken(String email, String password) async {
     try {
       var response = await Dio().post('$url/api/login',
